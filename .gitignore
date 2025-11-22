@@ -28,5 +28,3 @@ instance/
 
 # ---- OS files ----
 .DS_Store
-
-database/*

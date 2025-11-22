@@ -1,11 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from models import db, User, Student, Subject, ClassInfo
+from models import db, User, Student, Subject, ClassInfo, StudentSubject
 from config import Config
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,7 +18,9 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Routes and views
+##########################################################
+################ Routes and views ########################
+##########################################################
 
 # Route for the homepage (for students)
 @app.route('/', methods=['GET', 'POST'])
@@ -31,25 +29,16 @@ def home():
         roll_id = request.form['roll_id']
         class_name = request.form['class_name']
         
-        # Find the student by roll number and class
         student = Student.query.filter_by(roll_id=roll_id, class_name=class_name).first()
         
         if student:
-            # If student is found, display their results (marks)
-            results = student.marks
+            results = student.get_results()
             return render_template('results.html', student=student, results=results)
         else:
-            # If student is not found, show an error message
             error_message = "Student not found or incorrect class/roll number."
             return render_template('home.html', error_message=error_message)
     
-    # try:
-        # Get all available classes
-    classes = ClassInfo.query.all()
-    # except Exception as e:
-    #     print(e)
-    #     classes = []
-    # For GET request, render the form
+    classes = ClassInfo.query.all()  # Get all available classes
     return render_template('home.html', classes=classes)
 
 # Route to view results (already implemented above in the form submission)
@@ -122,10 +111,11 @@ def add_subject():
     if request.method == 'POST':
         name = request.form['name']
         code = request.form['code']
-        subject = Subject(name=name, code=code)
+        total_marks = int(request.form['total_marks'])
+        subject = Subject(name=name, code=code, total_marks=total_marks)
         db.session.add(subject)
         db.session.commit()
-        return redirect(url_for('manage_subjects'))
+        return redirect(url_for('dashboard'))
     return render_template('add_subject.html')
 
 @app.route('/manage_subjects')
@@ -166,7 +156,7 @@ def add_class():
         new_class = ClassInfo(class_name=class_name, section=section)
         db.session.add(new_class)
         db.session.commit()
-        return redirect(url_for('manage_classes'))
+        return redirect(url_for('dashboard'))
     return render_template('add_class.html')
 
 @app.route('/manage_classes')
@@ -195,6 +185,33 @@ def delete_class(class_id):
     db.session.delete(class_info)
     db.session.commit()
     return redirect(url_for('manage_classes'))
+
+
+@app.route('/assign_marks', methods=['GET', 'POST'])
+def assign_marks():
+    if request.method == 'POST':
+        student_id = request.form['student_id']
+        subject_id = request.form['subject_id']
+        obtained_marks = int(request.form['obtained_marks'])
+
+        student = Student.query.get(student_id)
+        subject = Subject.query.get(subject_id)
+
+        if student and subject:
+            # Assuming you have a StudentSubject table
+            student_subject = StudentSubject(
+                student_id=student.id,
+                subject_id=subject.id,
+                obtained_marks=obtained_marks
+            )
+            db.session.add(student_subject)
+            db.session.commit()
+            return redirect(url_for('dashboard'))
+        return redirect(url_for('assign_marks'))
+
+    students = Student.query.all()
+    subjects = Subject.query.all()
+    return render_template('assign_marks.html', students=students, subjects=subjects)
 
 @app.route('/change_password', methods=['GET', 'POST'])
 @login_required

@@ -1,0 +1,34 @@
+{% extends 'layout.html' %} {% block content %}
+<h2 class="text-center mt-5">Assign Marks</h2>
+
+<form action="{{ url_for('assign_marks') }}" method="POST">
+  <div class="mb-3">
+    <label for="student_id" class="form-label">Select Student</label>
+    <select name="student_id" class="form-control" required>
+      <option value="" disabled selected>Select a student</option>
+      {% for student in students %}
+      <option value="{{ student.id }}">
+        {{ student.full_name }} of Class: {{ student.class_name }} with Roll No:
+        {{ student.roll_id }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="subject_id" class="form-label">Subject</label>
+    <select name="subject_id" class="form-control" required>
+      {% for subject in subjects %}
+      <option value="{{ subject.id }}">{{ subject.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="obtained_marks" class="form-label">Obtained Marks</label>
+    <input type="number" name="obtained_marks" class="form-control" required />
+  </div>
+
+  <button type="submit" class="btn btn-success w-100">Assign Marks</button>
+</form>
+{% endblock %}
