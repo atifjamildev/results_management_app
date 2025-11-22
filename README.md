@@ -39,6 +39,20 @@ This project is focused on understanding basic Flask, not on building a producti
 
 ---
 
+## 🛠 Technologies Used
+
+| Layer | Technology |
+|-------|------------|
+| **Backend Framework** | Flask |
+| **Database** | SQLite |
+| **ORM** | SQLAlchemy |
+| **Authentication** | Flask-Login |
+| **Frontend Template Engine** | Jinja2 |
+| **Frontend** | HTML, CSS, Bootstrap |
+| **Language** | Python |
+
+---
+
 ## ✅ 1. Install Python
 
 Download and install Python from:

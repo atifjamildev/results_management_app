@@ -188,6 +188,7 @@ def delete_class(class_id):
 
 
 @app.route('/assign_marks', methods=['GET', 'POST'])
+@login_required
 def assign_marks():
     if request.method == 'POST':
         student_id = request.form['student_id']
