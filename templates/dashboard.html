@@ -1,0 +1,22 @@
+{% extends 'layout.html' %} {% block content %}
+<h1 class="text-center mt-5">Welcome, Admin</h1>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4">
+      <a href="{{ url_for('manage_students') }}" class="btn btn-primary w-100"
+        >Manage Students</a
+      >
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('manage_subjects') }}" class="btn btn-primary w-100"
+        >Manage Subjects</a
+      >
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('manage_classes') }}" class="btn btn-primary w-100"
+        >Manage Classes</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}

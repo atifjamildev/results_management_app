@@ -1,0 +1,31 @@
+{% extends 'layout.html' %} {% block content %}
+<h2 class="text-center mt-5">Search Your Results</h2>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <form action="/" method="POST">
+      <div class="mb-3">
+        <label for="roll_id" class="form-label">Roll ID</label>
+        <input type="text" name="roll_id" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label for="class_name" class="form-label">Select Class</label>
+        <select name="class_name" class="form-control" required>
+          <option value="">Select Class</option>
+          {% for class_info in classes %}
+          <option value="{{ class_info.class_name }}">
+            {{ class_info.class_name }} - {{ class_info.section }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">
+        Search Results
+      </button>
+    </form>
+
+    {% if error_message %}
+    <div class="alert alert-danger mt-4">{{ error_message }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

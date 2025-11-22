@@ -1,0 +1,32 @@
+# ---- Python ----
+__pycache__/
+
+# ---- Virtual Environment ----
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+
+# ---- Flask / Web ----
+instance/
+*.sqlite
+*.sqlite3
+*.log
+
+# ---- Environment Variables / Secrets ----
+.env
+*.env
+.env.*
+
+# ---- Caches ----
+.cache/
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+
+# ---- OS files ----
+.DS_Store
+
+database/*

@@ -1,0 +1,18 @@
+{% extends 'layout.html' %} {% block content %}
+<h2 class="text-center mt-5">Add New Class</h2>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <form action="{{ url_for('add_class') }}" method="POST">
+      <div class="mb-3">
+        <label for="class_name" class="form-label">Class Name</label>
+        <input type="text" name="class_name" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label for="section" class="form-label">Section</label>
+        <input type="text" name="section" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-success w-100">Add Class</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
